@@ -6,9 +6,8 @@ import com.sina.compiler.annotation.ByeNullField;
 
 /**
  * class Status$Con{
- *     public String status_abc_def_jgp_zfs
- *
- *   boolean a=  Utils.value(obj,Status$Con.status_abc_def_jgp_zfs);
+ *     public String MVIDEOINFO$MTAG$MADINFO="mVideoInfo$mTag$mAdInfo";
+ *     public String MVIDEOINFO$MCOMM"mVideoInfo$mComm";
  * }
  */
 @ByeNull
@@ -16,6 +15,8 @@ public class Status {
 
     private String mid;
     @ByeNullField
-    private Object abc;
+    private VideoInfo mVideoInfo;
+    @ByeNullField
+    private TagInfo mTagInfo;
 }
 
