@@ -34,6 +34,7 @@
 
 # ByebyeNullPointer
 
+实际开发过程中对象的层级特别深，当我们获取某个对象时。需要对前置对象做大量的判断，费时费力。如果不做有可能会空指针异常。
 ```java
 status2.taginfo.tagname
 if (status2.getTagInfo() != null && TextUtils.isEmpty(status2.getTagInfo().getTagName())) {
