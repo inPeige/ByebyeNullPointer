@@ -24,16 +24,22 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         assertEquals("com.sina.byenull", appContext.getPackageName());
-        Status status2 = new Status();
         Status status1 = new Status();
+        Status status2 = new Status();
         VideoInfo videoInfo = new VideoInfo();
+        TagInfo tagInfo = new TagInfo();
+        tagInfo.setActionLog(new ActionLog());
         videoInfo.setTag(new TagInfo());
         status1.setVideoInfo(videoInfo);
         if (status2.getTagInfo() != null && TextUtils.isEmpty(status2.getTagInfo().getTagName())) {
             //too do
         }
-        boolean isNull2 = ByNullUtils.isNull(status2, Status$Consts.MVIDEOINFO$MTAG);
-        boolean isNull1 = ByNullUtils.isNull(status1, Status$Consts.MVIDEOINFO$MTAG);
+        boolean isNull1 = ByNullUtils.isNull(status1, Status$Consts.MVIDEOINFO$MTAG$ACTIONLOG);
+        boolean isNull2 = ByNullUtils.isNull(status2, Status$Consts.MVIDEOINFO$MTAG$ACTIONLOG);
+        Object value = ByNullUtils.getValue(status1, Status$Consts.MVIDEOINFO, null);
+        if(value!=null){
+            Log.i("ByeNull", ((VideoInfo)value).toString());
+        }
         Log.i("ByeNull", String.valueOf(isNull1));
         Log.i("ByeNull", String.valueOf(isNull2));
     }

@@ -15,4 +15,20 @@ public class TagInfo {
     public void setTagName(String mTagName) {
         this.mTagName = mTagName;
     }
+
+    public ActionLog getActionLog() {
+        return actionLog;
+    }
+
+    public void setActionLog(ActionLog actionLog) {
+        this.actionLog = actionLog;
+    }
+
+    public UserInfo getUserInfo() {
+        return userInfo;
+    }
+
+    public void setUserInfo(UserInfo userInfo) {
+        this.userInfo = userInfo;
+    }
 }

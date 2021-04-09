@@ -193,6 +193,12 @@ public class ByeNullClassProcessor extends AbstractProcessor {
         }
     }
 
+    /**
+     * 写入字段。
+     * @param classBuilder
+     * @param tree
+     * @param sb
+     */
     public void createField(TypeSpec.Builder classBuilder ,ParamTree tree,StringBuilder sb){
         if(tree.getLinked()==null||tree.getLinked().size()==0){
             StringBuilder mCurrent = new StringBuilder();
@@ -213,6 +219,10 @@ public class ByeNullClassProcessor extends AbstractProcessor {
             mCurrent.append(sb).append("$");
         }
         mCurrent.append(tree.getValue());
+        FieldSpec mFieldBuilder = FieldSpec.builder(String.class, mCurrent.toString().toUpperCase())
+                .addModifiers(Modifier.PUBLIC, Modifier.STATIC, Modifier.FINAL)
+                .initializer("$S", mCurrent.toString()).build();
+        classBuilder.addField(mFieldBuilder);
         LinkedList<ParamTree> linkeds = tree.getLinked();
         for (ParamTree mTree : linkeds) {
             createField(classBuilder,mTree,mCurrent);
