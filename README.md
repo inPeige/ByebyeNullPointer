@@ -33,6 +33,20 @@
 
 ### ByeNull思想
 ```
+    private static Object isFieldNull(Object mObj, String mField) throws NoSuchFieldException, IllegalAccessException {
+        Class<?> mClass = mObj.getClass();
+        //获取当前Obj的Field属性
+        Field mClassField =  mClass.getDeclaredField(mField);
+        mClassField.setAccessible(true);
+        return mClassField.get(mObj);
+    }
+```
+1.运行时通过反射可以获取当前对象的Field属性
+  如果我们能过拿到我们想要获取对象的调用链路
+  ```
+   status2.getTagInfo().getActionLog();
+  ```
+```
 @ByeNull
 public class Status {
 
@@ -46,6 +60,10 @@ public class Status {
 
 ```
 public class Status$Consts {
+  public static final String MVIDEOINFO = "mVideoInfo";
+
+  public static final String MVIDEOINFO$MTAG = "mVideoInfo$mTag";
+
   public static final String MVIDEOINFO$MTAG$ACTIONLOG = "mVideoInfo$mTag$actionLog";
 
   public static final String MVIDEOINFO$MTAG$USERINFO = "mVideoInfo$mTag$userInfo";
@@ -53,6 +71,8 @@ public class Status$Consts {
   public static final String MVIDEOINFO$MCOMM = "mVideoInfo$mComm";
 
   public static final String MVIDEOINFO$MTAGLIST = "mVideoInfo$mTagList";
+
+  public static final String MTAGINFO = "mTagInfo";
 
   public static final String MTAGINFO$ACTIONLOG = "mTagInfo$actionLog";
 
