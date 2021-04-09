@@ -29,3 +29,33 @@
 | CLASS | 字节码增强 | 在编译出class后，通过修改class数据实现修改代码逻辑的目的。|
 | RUNTIME  | 反射 | 在程序运行期间，通过反射技术动态获取注解及其元素，从而完成不同的逻辑判断 |
 
+### APT 技术
+
+### ByeNull思想
+```
+@ByeNull
+public class Status {
+
+    private String mid;
+    @ByeNullField
+    private VideoInfo mVideoInfo;
+    @ByeNullField
+    private TagInfo mTagInfo;
+}
+```
+
+```
+public class Status$Consts {
+  public static final String MVIDEOINFO$MTAG$ACTIONLOG = "mVideoInfo$mTag$actionLog";
+
+  public static final String MVIDEOINFO$MTAG$USERINFO = "mVideoInfo$mTag$userInfo";
+
+  public static final String MVIDEOINFO$MCOMM = "mVideoInfo$mComm";
+
+  public static final String MVIDEOINFO$MTAGLIST = "mVideoInfo$mTagList";
+
+  public static final String MTAGINFO$ACTIONLOG = "mTagInfo$actionLog";
+
+  public static final String MTAGINFO$USERINFO = "mTagInfo$userInfo";
+}
+```
