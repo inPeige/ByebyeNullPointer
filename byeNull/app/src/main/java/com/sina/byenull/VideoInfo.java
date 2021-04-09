@@ -7,4 +7,20 @@ public class VideoInfo {
     private TagInfo mTag;
     @ByeNullField
     private CommInfo mComm;
+
+    public TagInfo getTag() {
+        return mTag;
+    }
+
+    public void setTag(TagInfo mTag) {
+        this.mTag = mTag;
+    }
+
+    public CommInfo getComm() {
+        return mComm;
+    }
+
+    public void setComm(CommInfo mComm) {
+        this.mComm = mComm;
+    }
 }

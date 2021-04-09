@@ -3,8 +3,17 @@ package com.sina.compiler;
 import java.util.LinkedList;
 
 public class ParamTree {
+    private String mClassName;
     private String mValue;
     private LinkedList<ParamTree> mLinked=new LinkedList<>();
+
+    public String getClassName() {
+        return mClassName;
+    }
+
+    public void setClassName(String mClassName) {
+        this.mClassName = mClassName;
+    }
 
     public String getValue() {
         return mValue;

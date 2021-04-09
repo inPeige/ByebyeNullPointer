@@ -1,6 +1,8 @@
 package com.sina.byenull;
 
 import android.content.Context;
+import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -22,5 +24,17 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         assertEquals("com.sina.byenull", appContext.getPackageName());
+        Status status2 = new Status();
+        Status status1 = new Status();
+        VideoInfo videoInfo = new VideoInfo();
+        videoInfo.setTag(new TagInfo());
+        status1.setVideoInfo(videoInfo);
+        if (status2.getTagInfo() != null && TextUtils.isEmpty(status2.getTagInfo().getTagName())) {
+            //too do
+        }
+        boolean isNull2 = ByNullUtils.isNull(status2, Status$Consts.MVIDEOINFO$MTAG);
+        boolean isNull1 = ByNullUtils.isNull(status1, Status$Consts.MVIDEOINFO$MTAG);
+        Log.i("ByeNull", String.valueOf(isNull1));
+        Log.i("ByeNull", String.valueOf(isNull2));
     }
 }

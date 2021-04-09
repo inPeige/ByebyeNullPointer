@@ -62,7 +62,6 @@ public class ByeNullClassProcessor extends AbstractProcessor {
         ArrayList<ClassParam> classParams = processClassParam(roundEnvironment);
         if (classParams.size() > 0) {
             for (ClassParam classParam : classParams) {
-                log.i(classParam.toString());
                 createClassFile(classParam);
             }
         }
@@ -73,14 +72,8 @@ public class ByeNullClassProcessor extends AbstractProcessor {
         ArrayList<ParamTree> mFieldList = new ArrayList<>();
         for (int i = 0; i < params.size(); i++) {
             ProcessParam processParam = params.get(i);
-            ParamTree paramTree = new ParamTree();
-            paramTree.setValue(processParam.getFieldValue());
             ParamTree childParam = processChildParam(processParam.getElement());
-            if(childParam!=null){
-                log.i(processParam.getFieldValue()+"------"+childParam.toString());
-                paramTree.getLinked().add(childParam);
-            }
-            mFieldList.add(paramTree);
+            mFieldList.add(childParam);
         }
         return mFieldList;
     }
@@ -97,10 +90,10 @@ public class ByeNullClassProcessor extends AbstractProcessor {
             return paramTree;
         }
         ParamTree paramTree = new ParamTree();
+        paramTree.setValue(element.getSimpleName().toString());
+        LinkedList<ParamTree> linked = paramTree.getLinked();
         for (int i = 0; i < params.size(); i++) {
             ProcessParam processParam = params.get(i);
-            paramTree.setValue(processParam.getFieldValue());
-            LinkedList<ParamTree> linked = paramTree.getLinked();
             ParamTree childParam = processChildParam(processParam.getElement());
             if(childParam!=null){
                 linked.add(childParam);
@@ -109,6 +102,14 @@ public class ByeNullClassProcessor extends AbstractProcessor {
         return paramTree;
     }
 
+    /**
+     * 收集需要处理的类防止ABABAB的问题出现
+     *
+     *例如如果对象A->对象B->对象A的问题
+     * 通过ByeNull注解保证在遍历属性时如果遇到ABA的问题时将A过滤。
+     * @param roundEnvironment
+     * @return
+     */
     private HashMap<String, Boolean> processByNull(RoundEnvironment roundEnvironment) {
         HashMap<String, Boolean> mByNullMap = new HashMap<>();
         Set<? extends Element> elements = roundEnvironment.getElementsAnnotatedWith(ByeNull.class);
@@ -120,7 +121,7 @@ public class ByeNullClassProcessor extends AbstractProcessor {
     }
 
     /**
-     *
+     *遍历子Param
      */
     private ArrayList<ClassParam> processClassParam(RoundEnvironment roundEnvironment) {
         ArrayList<ClassParam> mClassParams = new ArrayList<>();
@@ -142,15 +143,15 @@ public class ByeNullClassProcessor extends AbstractProcessor {
 
     /**
      * 解析所有ByeNullField注解的类。存入HashMap
-     *
      * @param roundEnvironment
      * @return
      */
     private HashMap<TypeMirror, ArrayList<ProcessParam>> processElement(RoundEnvironment roundEnvironment) {
         HashMap<TypeMirror, ArrayList<ProcessParam>> mTypeElementHashMap = new HashMap<>();
+        //获取所有被ByeNullField注解的参数Element
         Set<? extends Element> elements = roundEnvironment.getElementsAnnotatedWith(ByeNullField.class);
         for (Element element : elements) {
-            //ClassName
+            //获取Element的父容器ClassName
             TypeMirror enclosingElement = element.getEnclosingElement().asType();
             ArrayList<ProcessParam> processParams = mTypeElementHashMap.get(enclosingElement);
             if (processParams == null) {
@@ -180,7 +181,7 @@ public class ByeNullClassProcessor extends AbstractProcessor {
         if(fieldValue!=null&&fieldValue.size()>0){
             for (int i = 0; i < fieldValue.size(); i++) {
                 ParamTree paramTree = fieldValue.get(i);
-                createField(classBuilder,paramTree,new StringBuilder());
+                createField(classBuilder,paramTree,null);
             }
             TypeSpec build = classBuilder.build();
             JavaFile javaFile = JavaFile.builder(Consts.PACKAGE_OF_GENERATE_FILE, build).build();
@@ -191,22 +192,31 @@ public class ByeNullClassProcessor extends AbstractProcessor {
             }
         }
     }
+
     public void createField(TypeSpec.Builder classBuilder ,ParamTree tree,StringBuilder sb){
         if(tree.getLinked()==null||tree.getLinked().size()==0){
             StringBuilder mCurrent = new StringBuilder();
-            mCurrent.append(sb).append("$");
+            //1.表示当前注解字段类中Field没有被ByeNullField注解
+            if(sb!=null){
+                mCurrent.append(sb).append("$");
+            }
             mCurrent.append(tree.getValue());
+            log.i(mCurrent.toString());
             FieldSpec mFieldBuilder = FieldSpec.builder(String.class, mCurrent.toString().toUpperCase())
-                    .addModifiers(Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL)
+                    .addModifiers(Modifier.PUBLIC, Modifier.STATIC, Modifier.FINAL)
                     .initializer("$S", mCurrent.toString()).build();
             classBuilder.addField(mFieldBuilder);
             return;
         }
         StringBuilder mCurrent = new StringBuilder();
-        mCurrent.append(sb).append(tree.getValue()).append("$");
+        if(sb!=null){
+            mCurrent.append(sb);
+        }
+        mCurrent.append(tree.getValue());
         LinkedList<ParamTree> linkeds = tree.getLinked();
         for (ParamTree mTree : linkeds) {
             createField(classBuilder,mTree,mCurrent);
         }
     }
+
 }
