@@ -31,7 +31,8 @@ public class ExampleInstrumentedTest {
         tagInfo.setActionLog(new ActionLog());
         videoInfo.setTag(new TagInfo());
         status1.setVideoInfo(videoInfo);
-        if (status2.getTagInfo() != null && TextUtils.isEmpty(status2.getTagInfo().getTagName())) {
+        status2.getTagInfo().getTagName();
+        if (status2.getTagInfo() != null &&status2.getTagInfo().getActionLog()!=null) {
             //too do
         }
         boolean isNull1 = ByNullUtils.isNull(status1, Status$Consts.MVIDEOINFO$MTAG$ACTIONLOG);

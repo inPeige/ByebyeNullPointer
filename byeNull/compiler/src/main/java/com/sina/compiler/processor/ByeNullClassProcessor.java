@@ -38,6 +38,11 @@ import javax.lang.model.util.Types;
 @SupportedSourceVersion(SourceVersion.RELEASE_7)
 //指定处理的注解
 @SupportedAnnotationTypes(Consts.ANNOTATION_BYE_NULL)
+/**
+ * 1。继承AbstractProcessor类
+ * 2。通过SPI在resources声明自定义注解处理器
+ * 3。在编译环境如果项目中有被SupportedAnnotationTypes声明的注解注释那么就会调用process()方法。
+ */
 public class ByeNullClassProcessor extends AbstractProcessor {
     private Messager mMessager;
     private Filer mFiler;
@@ -55,6 +60,12 @@ public class ByeNullClassProcessor extends AbstractProcessor {
         log = Log.newLog(mMessager);
     }
 
+    /**
+     *
+     * @param set 包含所有被SupportedAnnotationTypes指定的注解的集合
+     * @param roundEnvironment 相当于上下文
+     * @return
+     */
     @Override
     public boolean process(Set<? extends TypeElement> set, RoundEnvironment roundEnvironment) {
         mByNullMap = processByNull(roundEnvironment);

@@ -5,7 +5,12 @@ import android.text.TextUtils;
 import java.lang.reflect.Field;
 
 public class ByNullUtils {
-
+    /**
+     *
+     * @param mObj
+     * @param path
+     * @return
+     */
     public static boolean isNull(Object mObj,String path){
         if (TextUtils.isEmpty(path) || mObj == null) {
             return false;
