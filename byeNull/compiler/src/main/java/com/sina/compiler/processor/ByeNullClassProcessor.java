@@ -210,7 +210,7 @@ public class ByeNullClassProcessor extends AbstractProcessor {
         }
         StringBuilder mCurrent = new StringBuilder();
         if(sb!=null){
-            mCurrent.append(sb);
+            mCurrent.append(sb).append("$");
         }
         mCurrent.append(tree.getValue());
         LinkedList<ParamTree> linkeds = tree.getLinked();

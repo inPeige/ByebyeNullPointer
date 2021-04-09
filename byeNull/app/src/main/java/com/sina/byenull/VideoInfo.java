@@ -7,6 +7,8 @@ public class VideoInfo {
     private TagInfo mTag;
     @ByeNullField
     private CommInfo mComm;
+    @ByeNullField
+    private TagList mTagList;
 
     public TagInfo getTag() {
         return mTag;
